@@ -13,6 +13,7 @@ I already am using vundle, so to install the vim plugin:
 Add line to ~/.vimrc: 
 Plugin 'git://github.com/shime/vim-livedown.git'
 
+Removed one code formatter, and installed another: [https://github.com/Chiel92/vim-autoformat]
 # Early beginnings
 After the initial extract, my first idea is create a node project that copies "from" a directory "to" another directory and then put that code into github.
 
