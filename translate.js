@@ -2,21 +2,13 @@
 
 const fs = require('fs-extra');
 const walk = require('walk');
-
 const readline = require('linebyline');
-
-var madeDirectories = [];
 
 function handleMarkupFile(root, name, fromDir, toDir) {
 	const srcDir = root;
 	const destDir = srcDir.replace(fromDir, toDir);
 
 	const srcName = `${srcDir}/${name}`;
-
-	if(madeDirectories.indexOf(destDir) < 0) {
-		fs.mkdirSync(destDir);
-		madeDirectories.push(destDir);
-	}
 
 	const destName = `${destDir}/${name}.md`;
 	let dest = fs.openSync(destName,'w+');
