@@ -41,7 +41,7 @@ function handleMarkupFile(root, name, fromDir, toDir) {
 
 
 function process(fromDir, toDir) {
-	const markupRe = /[^.]$/;
+	const markupRe = /mainSpace$/;
 	const options = {
 		followLinks: false
 	};
@@ -59,7 +59,8 @@ function process(fromDir, toDir) {
 	walker.on('file', function(root, fileStats, next) {
 		const src = root + '/' + fileStats.name;
 		const dest = src.replace(fromDir, toDir);
-		if (src.match(markupRe)) {
+
+		if (root.match(markupRe)) {
 			handleMarkupFile(root, fileStats.name, fromDir, toDir);
 		} else {
 			fs.copy(src, dest, err => {
