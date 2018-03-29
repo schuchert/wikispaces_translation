@@ -25,6 +25,13 @@ function handleMarkupFile(root, name, fromDir, toDir) {
 	writeStream.once('open', (fd) => {
 		let lineReader = readline(srcName);
 		lineReader.on('line', function(line, lineCount, byteCount) {
+			var m;
+			if(m = line.match('^([=]+) *(.*[^=])=+$')) {
+				line = m[1].replace(/=/g, '#') + ' ' + m[2];
+			}
+			if(line.match(/^\[\[code\]\]$/)) {
+				line = '```'
+			}
 			writeStream.write(line);
 			writeStream.write('\n');
 		}).on('close', function() {
