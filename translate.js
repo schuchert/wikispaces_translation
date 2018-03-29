@@ -5,24 +5,28 @@ const walk = require('walk');
 
 const readline = require('linebyline');
 
-function handleMarkupFile(src, dest) {
-	fs.copy(src, dest, err => {
-		if (err) return console.error(err);
-	});
-}
+var madeDirectories = [];
 
-/*
-function handleMarkupFile2(src, dest) {
-	const destName = `${dest}.md`;
+function handleMarkupFile(root, name, fromDir, toDir) {
+	const srcDir = root;
+	const destDir = srcDir.replace(fromDir, toDir);
 
-	console.log(destName);
-	let destfs.openSync(destName);
+	const srcName = `${srcDir}/${name}`;
+
+	if(madeDirectories.indexOf(destDir) < 0) {
+		fs.mkdirSync(destDir);
+		madeDirectories.push(destDir);
+	}
+
+	const destName = `${destDir}/${name}.md`;
+	let dest = fs.openSync(destName,'w+');
 	let writeStream = fs.createWriteStream(destName);
 
 	writeStream.once('open', (fd) => {
-		let lineReader = readline(src);
+		let lineReader = readline(srcName);
 		lineReader.on('line', function(line, lineCount, byteCount) {
 			writeStream.write(line);
+			writeStream.write('\n');
 		}).on('close', function() {
 			writeStream.end();
 		}).on('error', function(e) {
@@ -34,7 +38,6 @@ function handleMarkupFile2(src, dest) {
 		console.error(e);
 	});
 }
-*/
 
 
 function process(fromDir, toDir) {
@@ -57,7 +60,7 @@ function process(fromDir, toDir) {
 		const src = root + '/' + fileStats.name;
 		const dest = src.replace(fromDir, toDir);
 		if (src.match(markupRe)) {
-			handleMarkupFile(src, dest);
+			handleMarkupFile(root, fileStats.name, fromDir, toDir);
 		} else {
 			fs.copy(src, dest, err => {
 				if (err) return console.error(err);
