@@ -41,10 +41,7 @@ function handleMarkupFile(root, name, fromDir, toDir) {
 
 function process(fromDir, toDir) {
 	const markupRe = /mainSpace$/;
-	const options = {
-		followLinks: false
-	};
-	const walker = walk.walk(fromDir, options);
+	const walker = walk.walk(fromDir);
 
 	walker.on('errors', function(root, nodeStatsArray, next) {
 		console.log(`Error: ${root}`);
