@@ -12,8 +12,9 @@ function findDirectoriesIn(fromDir) {
 		const walker = walk.walk(fromDir);
 
 		walker.on('directory', (root, fileStats, next) => {
-			let name = (root + '/' + fileStats.name).replace(fromDir + '/', '');
-			dirs.push(name);
+			let relativeBaseName = root.replace(fromDir, '');
+			let relativeDirectory = relativeBaseName + '/' + fileStats.name;
+			dirs.push(relativeDirectory);
 			next();
 		});
 
@@ -30,8 +31,7 @@ function removeOldToStructure(toDir) {
 }
 
 function buildToStructure(directories, toDir) {
-	fs.mkdirSync(toDir);
-	directories.forEach((dir) => {
+	['', ...directories].forEach((dir) => {
 		fs.mkdirSync(path.join(toDir, dir));
 	});
 }
@@ -42,7 +42,5 @@ function createParallelStructure(fromDir, toDir) {
 		buildToStructure(dirs, toDir);
 	});
 }
-
-createParallelStructure('/home/vagrant/schuchert', 'foo');
 
 exports.createParallelStructure = createParallelStructure;
